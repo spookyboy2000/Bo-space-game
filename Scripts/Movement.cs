@@ -4,50 +4,27 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float speed;
-    public float jump;
-    float moveVelocity;
+    public float MovementSpeed = 1;
+    public float JumpForce = 1;
 
-    bool grounded = true;
-    // Start is called before the first frame update
-    void Start()
+    private Rigidbody2D _rigidbody;
+
+    private void Start()
     {
-        
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.W))
+        var movement = Input.GetAxis("Horizontal");
+        transform.position += new Vector3(movement, 0, 0) * Time.deltaTime * MovementSpeed;
+
+        if (!Mathf.Approximately(0, movement))
+            transform.rotation = movement > 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+
+        if (Input.GetButtonDown("Jump") && Mathf.Abs(_rigidbody.velocity.y) < 0.001f)
         {
-            if (grounded)
-            {
-                GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jump);
-            }
+            _rigidbody.AddForce(new Vector2(0, JumpForce), ForceMode2D.Impulse);
         }
-
-        moveVelocity = 0;
-
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
-        {
-            moveVelocity = -speed;
-        }
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
-        {
-            moveVelocity = speed;
-        }
-
-        GetComponent<Rigidbody2D>().velocity = new Vector2(moveVelocity, GetComponent<Rigidbody2D>().velocity.y);
-
-    }
-
-    void OnTriggerEnter()
-    {
-        grounded = true;
-    }
-
-    void OnTriggerExit2D()
-    {
-        grounded = false;
     }
 }
