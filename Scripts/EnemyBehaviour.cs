@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehaviour : MonoBehaviour
 {
     public float Hitpoints;
     public float MaxHitpoints = 5;
+    public HealthbarBehaviour Healthbar;
 
     void Start()
     {
         Hitpoints = MaxHitpoints;
+        Healthbar.SetHealth(Hitpoints, MaxHitpoints);
     }
 
     public void TakeHit(float damage)
