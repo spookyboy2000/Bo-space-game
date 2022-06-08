@@ -26,17 +26,17 @@ public class PickUpItems : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<DiamondScript>())
+        if (collision.GetComponent<ItemScript>().itemType == ItemTypes.Diamond)
         {
             DiamondAmount += 1;
             Destroy(collision.gameObject);
         }
-        else if (collision.GetComponent<AdamantiumScript>())
+        else if (collision.GetComponent<ItemScript>().itemType == ItemTypes.Adamantium)
         {
             AdamantiumAmount += 1;
             Destroy(collision.gameObject);
         }
-        else if (collision.GetComponent<VibraniumScript>())
+        else if (collision.GetComponent<ItemScript>().itemType == ItemTypes.Vibranium)
         {
             VibraniumAmount += 1;
             Destroy(collision.gameObject);
